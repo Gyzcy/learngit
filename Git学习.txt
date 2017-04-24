@@ -143,6 +143,23 @@ Git管理的是修改，如新增，删除，更改，新建等都是修改
 						|
 		其他分支 --- 动次打次 --- ing
 
+6.1 创建与合并分支
+
+分支：每次提交，串成时间线，默认是master（主分支）
+	
+	关系：HEAD --> 分支(master) --> new commit
+
+Git鼓励大量使用分支：
+- 查看分支：`git branch`
+- 创建分支：`git branch <name>`
+- 切换分支：`git checkout <name>`
+- 创建+切换分支：`git checkout -b <name>`
+- 合并某分支到当前分支：`git merge <name>`
+- 删除分支：`git branch -d <name>`
+
+疑问：
+- 如果多人都有分支，修改的文件有可能冲突，该如何解决合并？
+- 既然合并（merge）就是移动master到dev的最新提交点，那么也就是说让master与dev保持一致了？如果有多个分支，该以谁为准？
 
 #### 感谢:廖雪峰老师的教程，真的算是“史上最浅显易懂的Git教程！” ^_^
 From: http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000
