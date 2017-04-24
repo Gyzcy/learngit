@@ -1,0 +1,135 @@
+### Git学习
+
+#### 1. 介绍
+	- Git是目前世界上最先进的分布式版本控制系统（没有之一），免费、开源
+	- 版本控制（(Revision control)）系统：追踪、记录和管理文本内容的变化，便于协作
+	- linus Torvalds 开始着手开发 Git 是为了作为一种过渡方案来替代 BitKeeper，后者之前一直是 Linux 内核开发人员在全球使用的主要源代码工具。
+	
+		精彩片段：
+			开发Samba的Andrew试图破解BitKeeper的协议（这么干的其实也不只他一个），被BitMover公司发现了（监控工作做得不错！），于是BitMover公司怒了，要收回Linux社区的免费使用权。
+			Linus可以向BitMover公司道个歉，保证以后严格管教弟兄们，嗯，这是不可能的。实际情况是这样的：
+			Linus花了两周时间自己用C写了一个分布式版本控制系统，这就是Git！一个月之内，Linux系统的源码已经由Git管理了！牛是怎么定义的呢？大家可以体会一下。
+	- 分布式：
+		安全：丢失了直接复制同事一个就行，无需中央管理器
+		强大的分支管理
+		
+	- Git：The stupid content tracker, 傻瓜内容跟踪器
+	
+		
+#### 2. 安装Git
+	2.1 Linux安装
+	# yum install git -y
+	
+	2.2 设置account身份识别
+	
+	```
+	*** Please tell me who you are.
+	Run
+
+	git config --global user.email "you@example.com"
+	git config --global user.name "Your Name"
+
+	to set your account's default identity.
+	Omit --global to set the identity only in this repository.
+	```
+	因为Git是分布式版本控制系统，所以，每个机器都必须自报家门：你的名字和Email地址。你也许会担心，如果有人故意冒充别人怎么办？这个不必担心，首先我们相信大家都是善良无知的群众，其次，真的有冒充的也是有办法可查的。
+	注意git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。
+	
+	
+#### 3. 创建版本库（Repository）
+
+	3.1 初始化git仓库
+	# mkdir learngit
+	# cd learngit
+	# git init #初始化一个empty仓库，当然也可以在非空目录下reinitialized，慎重，除非你真的知道自己在做什么
+		repository你可以简单理解成一个目录，这个目录里面的所有文件都可以被Git管理起来，每个文件的修改、删除，Git都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻可以“还原”。
+		细心的读者可以发现当前目录下多了一个.git的目录，这个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。
+	
+	注意：
+		- 只能追踪文本文件，如txt，html，程度代码等等，二进制只能追踪大小改变
+		- notepad++是不错的记事本，默认编码改为UTF-8 without BOM
+	
+	3.2 添加文件值Git仓库，两步：
+	# echo "Git is a version control system." >> readme.txt
+	# echo "Git is free software."	>> readme.txt
+	# git add readme.txt	#注意，可反复多次使用，添加多个文件；
+			#执行上面的命令，没有任何显示，这就对了，Unix的哲学是“没有消息就是好消息”，说明添加成功。
+	# git commit -m '<message>' # 提交所有改动文件
+	
+	3.3 查看日志提交记录
+	# git log
+	commit 4bf833e3c5db927c9044bbff70d41b0a83670b8b
+	Author: zhangchunyang <zhangchunyang1@xiaomi.com>
+	Date:   Wed Apr 19 03:04:13 2017 -0400
+
+		wrote a readme file
+
+#### 4. 时光机穿梭
+4.1 工作树working tree
+	- 要随时掌握工作区的状态，使用git status命令。
+	- 如果git status告诉你有文件被修改过，用git diff可以查看修改内容(和上一次状态做对比)。
+	
+	只有有所改动，随时提交至版本库中，类似打游戏中的“存档/存盘”，而Git就是随时保存一个“快照”，即commit
+		
+	- git log [<options>] [<revision range>] [[--] <path>...]
+		显示commit的日志
+		格式：
+			commit 8dadbbd92c5a6de13c68cbd573cb8649991c0edd	 #SHA1计算的hash值 commit id（版本号）
+			Author: zhangchunyang <zhangchunyang1@xiaomi.com>
+			Date:   Wed Apr 19 10:55:52 2017 -0400
+			
+			 append GPL		#“message”
+	
+4.2 版本回退	
+	- git reset --hard 'commit_id' HEAD（指针）指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭
+	穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+	上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100。
+	# git reflog # 要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+	<commit id>	<HEAD@{}:> <command:> <message>
+	c90ec01 HEAD@{0}: commit: add a
+	8dadbbd HEAD@{1}: reset: moving to 8dadbbd92c5a6de13c68cbd573cb8649991c0edd
+	9bd3d49 HEAD@{2}: reset: moving to HEAD^
+	8dadbbd HEAD@{3}: commit: append GPL
+	9bd3d49 HEAD@{4}: commit: add distributed
+	4bf833e HEAD@{5}: commit (initial): wrote a readme file
+
+4.3 工作区和暂存区
+- 工作区（Working Directory）：代码目录，如learngit
+- 版本库（Repository）：工作区中的.git目录
+- 暂存区（stage/index）:
+- HEAD: 指向分支的指针
+
+工作区 --> 版本库（stage） --> 版本库分支，如master
+即`git add` 将修改放到暂存区（stage），接着执行`git commit`可以将暂存区的所有修改提交至分支
+
+
+4.4 管理修改
+
+Git管理的是修改，如新增，删除，更改，新建等都是修改
+
+- `git add`将工作区发生的修改提交至暂存区，等待commit
+- `git commit`只负责将暂存区的所有修改，提交至版本库分支上
+
+4.5 撤销修改
+场景1： 当改乱了工作区，想要丢弃工作区的修改时，git checkout -- <file>..." to discard changes in working directory"，即用版本库中的版本来替换工作区的版本，无论是修改还是删除，都可以“一键还原”
+场景2： 当改乱了工作区，又添加到了暂存区时，想丢弃修改，分两步：
+	使用 "git reset HEAD <file>..." to unstage 回到场景1，然后按场景1操作
+场景3：已经提交了不合适的修改至版本库时，想要撤销本次提交，参考`版本回退`，不过前提是没有推送到远程库
+
+
+4.6 删除文件
+`git rm file`Remove files from the working tree and from the index。删除工作区和暂存区的files,接下来commit就是确认了删除files
+`git checkout -- files` 从最新版本库里的那个文件还原到工作区，即只能恢复到上一版本
+`git reset --hard commit_id`也是可以的，彻底将上一版本回复到工作区 
+
+
+#### 5. 远程仓库
+
+关联远程库：
+	# git remote add origin git@server-name:path/repo-name.git
+	# git push -u origin master #第一次推送master分支的所有内容
+	此后修改，每次本地提交后，简化命令：
+		# git push origin master 推送最新修改
+		
+	分布式版本系统的最大好处之一是在本地工作完全不需要考虑远程库的存在，也就是有没有联网都可以正常工作，而SVN在没有联网的时候是拒绝干活的！
+
