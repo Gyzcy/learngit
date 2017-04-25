@@ -216,6 +216,26 @@ CMD:`git merge --no-ff -m "merge with no-ff" dev`
 - 在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
 - 建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
 - 从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+
+#### 7. 标签管理
+
+标签(tag):常用来发布一个版本，是版本库的一个快照，其实就是指向某个commit的指针，类似于分支，（分支可以移动，而tag是不能移动的），所以，创建和删除tag都是瞬间完成的。
+
+好处：让人容易记住，它跟某个commit绑在一起，可通过它查找commit
+
+7.1 创建标签
+1. 切换到需要打标签的分支上
+$ git branch
+$ git checkout master
+2. `git tag [ -m <msg> ]<tagname> <commit>` 打标签，默认为HEAD
+$ git tag v1.0
+3. `git tag`可用来查看所有tag
+4. `git show <tagname>` 查看tag的信息
+
+git tag -s <tagname> -m "blablabla..."可以用PGP签名标签；
+
+
+
 #### 感谢:廖雪峰老师的教程，真的算是“史上最浅显易懂的Git教程！” ^_^
 From: http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000
 
