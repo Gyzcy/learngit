@@ -193,6 +193,12 @@ CMD:`git merge --no-ff -m "merge with no-ff" dev`
 `git stash list`:列出保存现场的所有内容
 `git stash pop`: 恢复现场同时删除stash内容
 `git stash apply`: 仅仅恢复现场，并不清除内容，需要手动`git stash drop`来删除
+
+6.5 feature分支
+- 开发一个新feature，最好新建一个分支；
+
+- 如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
+
 #### 感谢:廖雪峰老师的教程，真的算是“史上最浅显易懂的Git教程！” ^_^
 From: http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000
 
