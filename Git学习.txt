@@ -193,6 +193,59 @@ CMD:`git merge --no-ff -m "merge with no-ff" dev`
 `git stash list`:列出保存现场的所有内容
 `git stash pop`: 恢复现场同时删除stash内容
 `git stash apply`: 仅仅恢复现场，并不清除内容，需要手动`git stash drop`来删除
+
+6.5 feature分支
+- 开发一个新feature，最好新建一个分支；
+
+- 如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
+
+6.6 多人协作
+
+1. 首先，可以试图用git push origin branch-name推送自己的修改
+2. 如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+3. 如果合并有冲突，则解决冲突，并在本地提交；
+4. 没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+
+如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream branch-name origin/branch-name。
+这就是多人协作的工作模式，一旦熟悉了，就非常简单。
+
+小结：
+- `git remote -v`: 查看远程仓库信息
+- 本地新建的分支如果不推送到远程，对其他人就是不可见的；
+- 从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交
+- 在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+- 建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+- 从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+
+#### 7. 标签管理
+
+标签(tag):常用来发布一个版本，是版本库的一个快照，其实就是指向某个commit的指针，类似于分支，（分支可以移动，而tag是不能移动的），所以，创建和删除tag都是瞬间完成的。
+
+好处：让人容易记住，它跟某个commit绑在一起，可通过它查找commit
+
+7.1 创建标签
+1. 切换到需要打标签的分支上
+$ git branch
+$ git checkout master
+2. `git tag [ -m <msg> ]<tagname> <commit>` 打标签，默认为HEAD
+$ git tag v1.0
+3. `git tag`可用来查看所有tag
+4. `git show <tagname>` 查看tag的信息
+
+git tag -s <tagname> -m "blablabla..."可以用PGP签名标签；
+
+7.2 操作标签
+
+创建的标签只存储在本地，不会自动推送至远程。
+
+`git tag -d tagname`:删除本地标签
+`git push origin tagname`:推送某个标签至远程
+`git push origin --tags`: 推送全部未推送过的本地标签
+`git push origin :refs/tags/tagname`:通过push删除远程标签
+
+
+
+
 #### 感谢:廖雪峰老师的教程，真的算是“史上最浅显易懂的Git教程！” ^_^
 From: http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000
 
