@@ -234,6 +234,16 @@ $ git tag v1.0
 
 git tag -s <tagname> -m "blablabla..."可以用PGP签名标签；
 
+7.2 操作标签
+
+创建的标签只存储在本地，不会自动推送至远程。
+
+`git tag -d tagname`:删除本地标签
+`git push origin tagname`:推送某个标签至远程
+`git push origin --tags`: 推送全部未推送过的本地标签
+`git push origin :refs/tags/tagname`:通过push删除远程标签
+
+
 
 
 #### 感谢:廖雪峰老师的教程，真的算是“史上最浅显易懂的Git教程！” ^_^
