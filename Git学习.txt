@@ -99,7 +99,7 @@
 - 暂存区（stage/index）:
 - HEAD: 指向分支的指针
 
-工作区 --> 版本库（stage） --> 版本库分支，如master
+工作区(working Directory) --> 暂存区（stage） --> 版本库分支(repository)，如master
 即`git add` 将修改放到暂存区（stage），接着执行`git commit`可以将暂存区的所有修改提交至分支
 
 
